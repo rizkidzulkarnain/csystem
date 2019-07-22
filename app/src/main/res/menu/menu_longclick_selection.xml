@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+      tools:context="co.ejjv.ccms_mobile.module.menu_register_pl.list_tag.ListTagActivity">
+    <item
+            android:id="@+id/action_select"
+            android:title="SELECT"
+            app:showAsAction="always"
+    />
+</menu>

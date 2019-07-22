@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/darkBlue">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            tools:ignore="MissingConstraints">
+        <ImageView
+                android:padding="@dimen/default_padding_16"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/default_padding_100"
+                android:src="@drawable/logo"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_margin_16"
+                android:gravity="center"
+                android:orientation="vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/default_font_size_20"
+                    android:text="Pilih Project"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_16"
+                    android:layout_marginRight="@dimen/default_margin_16"
+                    android:layout_marginLeft="@dimen/default_margin_16"
+                    android:background="@color/white">
+
+                <EditText
+                        android:id="@+id/txtProject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:focusable="false"
+                        android:drawableRight="@drawable/ic_dropdown"
+                        android:hint="Pilih Project"
+                        android:enabled="true"
+                        android:padding="@dimen/default_padding_10"
+                        android:editable="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"/>
+                <!--<Spinner
+                        android:id="@+id/spProject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:padding="@dimen/default_padding_16"
+                        android:textSize="@dimen/default_font_size_10"
+                        android:backgroundTint="@color/black"
+                        android:overlapAnchor="false"/>-->
+            </LinearLayout>
+
+
+            <Button
+                    android:id="@+id/btn_go"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default_margin_16"
+                    android:padding="@dimen/default_padding_16"
+                    android:background="@color/colorAccent"
+                    android:text="GO"
+                    android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/default_margin_16"
+            android:gravity="bottom|center">
+        <TextView
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/login_desc"/>
+        <TextView
+                android:id="@+id/txtVersi"
+                android:layout_margin="@dimen/default_margin_16"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Versi : 1.0.10"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

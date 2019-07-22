@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent" android:layout_height="match_parent"
+              android:background="@color/lightGray"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvPLDet"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/default_padding_5"
+                    android:paddingBottom="@dimen/default_padding_16"
+                    android:paddingLeft="@dimen/default_padding_5"
+                    android:paddingRight="@dimen/default_padding_5"
+                    android:clipToPadding="false"/>
+
+            <!--<android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvListImage"
+                    android:layout_below="@id/rvPLDet"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/default_padding_5"
+                    android:paddingBottom="@dimen/default_padding_16"
+                    android:paddingLeft="@dimen/default_padding_5"
+                    android:paddingRight="@dimen/default_padding_5"
+                    android:clipToPadding="false"/>-->
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
