@@ -48,10 +48,20 @@
                 android:theme="@style/AppTheme">
         </activity>
 
+        <activity
+                android:name="co.ejjv.ccms_mobile.module.menu_close_pl.ClosePLActivity"
+                android:theme="@style/AppTheme">
+        </activity>
+
         <activity android:name="co.ejjv.ccms_mobile.util.QRScanner"></activity>
 
         <activity
                 android:name="co.ejjv.ccms_mobile.module.menu_register_pl.list_tag.ListTagActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+                android:name="co.ejjv.ccms_mobile.module.menu_close_pl.list_tag_close.ListTagCloseActivity"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

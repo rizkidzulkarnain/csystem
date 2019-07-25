@@ -13,6 +13,7 @@ import com.ejjv.ccms_mobile.R
 import kotlinx.android.synthetic.main.item_menu.view.*
 import android.app.Activity
 import android.content.Intent
+import co.ejjv.ccms_mobile.module.menu_close_pl.ClosePLActivity
 import co.ejjv.ccms_mobile.module.menu_list_pl.listpl.ListPLActivity
 import co.ejjv.ccms_mobile.module.menu_register_pl.RegisterPLActivity
 
@@ -63,7 +64,7 @@ class MenuAdapter() : RecyclerView.Adapter<MenuAdapter.myViewHolder>() {
         when (id) {
             1 -> aclass = RegisterPLActivity::class.java
             2 -> aclass = ListPLActivity::class.java
-            3 -> aclass = RegisterPLActivity::class.java
+            3 -> aclass = ClosePLActivity::class.java
             4 -> aclass = MenuActivity::class.java
             5 -> aclass = MenuActivity::class.java
             6 -> aclass = MenuActivity::class.java

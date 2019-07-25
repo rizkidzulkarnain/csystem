@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ccms-mobile</string>
+    <string name="app_name">csystem-mobile</string>
     <string name="login_desc">PT. Mitra Konsultansi Indonesia \n Android-Dev - 2019</string>
-    <string name="title_menu_activity">CCMS-Mobile Menu</string>
+    <string name="title_menu_activity">csystem-mobile Menu</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -12,7 +12,7 @@
     <!--list main menu title-->
     <string name="menu1">Register PL</string>
     <string name="menu2">List PL</string>
-    <string name="menu3">Under Construction</string>
+    <string name="menu3">Close PL</string>
     <string name="menu4">Under Construction</string>
 
     <string-array name="projectlist">

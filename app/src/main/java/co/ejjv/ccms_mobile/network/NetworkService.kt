@@ -1,5 +1,6 @@
 package co.ejjv.ccms_mobile.network
 
+import co.ejjv.ccms_mobile.model.param.ParamClosePL
 import co.ejjv.ccms_mobile.model.param.ParamMain
 import co.ejjv.ccms_mobile.model.param.ParamSaveRegisterPL
 import co.ejjv.ccms_mobile.model.response.gson.*
@@ -32,4 +33,7 @@ interface NetworkService {
     @Multipart
     @POST("pl/CreateWithUpload")
     fun saveRegisterPL(@Part("jsonData") name: RequestBody, @Part file: ArrayList<MultipartBody.Part>): Call<_MainResp<Int>>
+
+    @POST("pl/ClosePL")
+    fun saveClosePL(@Body listClosePL: List<ParamClosePL>): Call<_MainResp<Int>>
 }

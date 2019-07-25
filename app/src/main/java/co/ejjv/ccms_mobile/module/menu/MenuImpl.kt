@@ -15,7 +15,7 @@ class MenuImpl : MenuContract.Presenter{
     }
 
     override fun prepareMenu(menuList: ArrayList<Menu>) {
-        val menus = intArrayOf(R.drawable.ic_menu_barcode, R.drawable.ic_list, R.drawable.ic_build, R.drawable.ic_build)
+        val menus = intArrayOf(R.drawable.ic_menu_barcode, R.drawable.ic_list, R.drawable.ic_close_black, R.drawable.ic_build)
 
         var a = Menu(1, mContext.getResources().getString(R.string.menu1), menus[0])
         menuList.add(a)
@@ -48,8 +48,8 @@ class MenuImpl : MenuContract.Presenter{
             10,
             mContext.getResources().getString(R.string.menu4),
             menus[3]
-        )*/
-        menuList.add(a)
+        )
+        menuList.add(a)*/
 
         mMenuView.refreshAdapter()
     }
