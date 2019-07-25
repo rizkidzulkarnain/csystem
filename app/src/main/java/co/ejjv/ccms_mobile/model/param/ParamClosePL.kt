@@ -4,32 +4,17 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 
-class ParamSaveRegisterPL {
-    @SerializedName("TagReference")
+class ParamClosePL {
+    @SerializedName("ID")
     @Expose
-    var tagReference: String? = null
-    @SerializedName("Details")
+    var id: String? = null
+    @SerializedName("ActionBy")
     @Expose
-    var details: String? = null
-    @SerializedName("Category")
-    @Expose
-    var category: String? = null
-    @SerializedName("Phase")
-    @Expose
-    var phase: String? = null
-    @SerializedName("Discipline")
-    @Expose
-    var discipline: String? = null
-    @SerializedName("TargetDate")
-    @Expose
-    var targetDate: String? = null
-    @SerializedName("CreatedBy")
-    @Expose
-    var createdBy: String? = null
-    @SerializedName("CreatedOn")
-    @Expose
-    var createdOn: String? = null
+    var actionBy: String? = null
     @SerializedName("ProjectID")
     @Expose
     var projectID: String? = null
+    @SerializedName("Remarks")
+    @Expose
+    var remarks: String? = null
 }
