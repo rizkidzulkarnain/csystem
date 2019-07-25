@@ -1,4 +1,4 @@
-package co.ejjv.ccms_mobile.module.menu_register_pl.list_tag
+package co.ejjv.ccms_mobile.module.menu_close_pl.list_tag_close
 
 import android.app.Activity
 import android.content.Intent
@@ -12,28 +12,30 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import co.ejjv.ccms_mobile.model.response.gson.Tag
+import co.ejjv.ccms_mobile.model.response.gson.PL
+import co.ejjv.ccms_mobile.util.AlertDialogCustom
 import co.ejjv.ccms_mobile.util.LoadingDialog
 import co.ejjv.ccms_mobile.util.RecyclerItemClickListener
 import com.ejjv.ccms_mobile.R
-import kotlinx.android.synthetic.main.activity_list_pl.*
 import kotlinx.android.synthetic.main.activity_list_pl.toolbarSearch
 import kotlinx.android.synthetic.main.activity_list_tag.*
 import kotlinx.android.synthetic.main.activity_list_tag.ivNext
 import kotlinx.android.synthetic.main.activity_list_tag.ivPrev
 import kotlinx.android.synthetic.main.activity_list_tag.tvPage
 
-class ListTagActivity : AppCompatActivity(), ListTagContract.View {
-    lateinit var mTagImpl: ListTagContract.Presenter
+class ListTagCloseActivity : AppCompatActivity(), ListTagCloseContract.View {
+    lateinit var mTagImpl: ListTagCloseContract.Presenter
     lateinit var mLoading: LoadingDialog
-    lateinit var mListTagAdapter: ListTagAdapter
+    lateinit var mAlertDialog: AlertDialogCustom
 
-    lateinit var mListTag: ArrayList<Tag>
+    lateinit var mListTagCloseAdapter: ListTagCloseAdapter
+
+    lateinit var mPunchList: ArrayList<PL>
 
     /*ini untuk selection by long click*/
     lateinit var mContextMenu: Menu
     var mActionMode: ActionMode? = null
-    lateinit var mListTagMulti: ArrayList<Tag>
+    lateinit var mListTagMulti: ArrayList<PL>
     internal var isMultiSelect: Boolean = false
     /*END*/
 
@@ -43,9 +45,11 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
         setSupportActionBar(toolbarSearch)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        mTagImpl = ListTagImpl(
+        mAlertDialog = AlertDialogCustom(this)
+
+        mTagImpl = ListTagCloseImpl(
             this,
-            ListTagDataInteractor()
+            ListTagCloseDataInteractor()
         )
         mLoading = LoadingDialog.getInstance(this)
 
@@ -70,18 +74,18 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
             mTagImpl.onRefreshSource()
         }
 
-        mListTag = ArrayList()
+        mPunchList = ArrayList()
         mListTagMulti = ArrayList()
-        mListTagAdapter = ListTagAdapter(this, mListTag, mListTagMulti, this)
+        mListTagCloseAdapter = ListTagCloseAdapter(this, mPunchList, mListTagMulti, this)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvTagList.layoutManager = layoutManager
-        rvTagList.adapter = mListTagAdapter
+        rvTagList.adapter = mListTagCloseAdapter
 
         //RecyclerItemClickListener berasal dari class util
         rvTagList.addOnItemTouchListener(
             RecyclerItemClickListener(
-                this@ListTagActivity,
+                this@ListTagCloseActivity,
                 rvTagList,
                 object : RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
@@ -90,7 +94,7 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
                         }*/
                         if (!isMultiSelect) {
                             mListTagMulti = ArrayList()
-                            isMultiSelect = false
+                            isMultiSelect = true //jika ingin cuma satu aja yang dipilih pilih false
                             if (mActionMode == null) {
                                 mActionMode = startActionMode(mActionModeCallback)
                             }
@@ -123,7 +127,7 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 statusBarColor = window.statusBarColor
-                window.statusBarColor = ContextCompat.getColor(this@ListTagActivity, R.color.colorPrimary) //resources.getColor(R.color.colorPrimary)
+                window.statusBarColor = ContextCompat.getColor(this@ListTagCloseActivity, R.color.colorPrimary) //resources.getColor(R.color.colorPrimary)
             }
             return false
         }
@@ -131,8 +135,7 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             when (item.itemId) {
                 R.id.action_select -> {
-                    val tagNumber = mListTagMulti.get(0).getItemKey()
-                    goToRegisterPLActivity(tagNumber!!)
+                    mTagImpl.saveListClosePL(mListTagMulti)
                     return true
                 }
                 else -> return false
@@ -152,10 +155,10 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
 
     fun multi_select(position: Int) {
         if (mActionMode != null) {
-            if (mListTagMulti.contains(mListTag.get(position)))
-                mListTagMulti.remove(mListTag.get(position))
+            if (mListTagMulti.contains(mPunchList.get(position)))
+                mListTagMulti.remove(mPunchList.get(position))
             else
-                mListTagMulti.add(mListTag.get(position))
+                mListTagMulti.add(mPunchList.get(position))
             if (mListTagMulti.size > 0) {
                 mActionMode!!.setTitle("" + mListTagMulti.size)
                 if (mListTagMulti.size == 1) {
@@ -172,15 +175,15 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
     }
 
     fun refreshAdapter2() {
-        mListTagAdapter.mListTag_selected = mListTagMulti
-        mListTagAdapter.mListTag = mListTag
-        mListTagAdapter.notifyDataSetChanged()
+        mListTagCloseAdapter.mPunchList_selected = mListTagMulti
+        mListTagCloseAdapter.mPunchList = mPunchList
+        mListTagCloseAdapter.notifyDataSetChanged()
     }
 
 
-    override fun setListTag(listTag: ArrayList<Tag>) {
-        mListTag.clear()
-        mListTag.addAll(listTag)
+    override fun setListTag(listTag: ArrayList<PL>) {
+        mPunchList.clear()
+        mPunchList.addAll(listTag)
         refreshAdapter()
     }
 
@@ -197,7 +200,7 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
     }
 
     override fun showAlertDialog(imsg: String, itipe: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mAlertDialog.showAlertDialog(imsg, itipe)
     }
 
     override fun showToast(imsg: String?) {
@@ -213,11 +216,11 @@ class ListTagActivity : AppCompatActivity(), ListTagContract.View {
     }
 
     override fun refreshAdapter() {
-        mListTagAdapter.notifyDataSetChanged()
+        mListTagCloseAdapter.notifyDataSetChanged()
     }
 
-    override fun getTagAdapter(): ListTagAdapter {
-        return mListTagAdapter
+    override fun getTagAdapter(): ListTagCloseAdapter {
+        return mListTagCloseAdapter
     }
 
     override fun setPagination(page: Int, totalData: Int) {

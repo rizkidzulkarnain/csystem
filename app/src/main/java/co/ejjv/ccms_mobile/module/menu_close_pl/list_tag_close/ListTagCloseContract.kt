@@ -1,12 +1,13 @@
-package co.ejjv.ccms_mobile.module.menu_register_pl.list_tag
+package co.ejjv.ccms_mobile.module.menu_close_pl.list_tag_close
 
 import android.support.v7.widget.SearchView
+import co.ejjv.ccms_mobile.model.param.ParamClosePL
 import co.ejjv.ccms_mobile.model.param.ParamMain
 import co.ejjv.ccms_mobile.model.response.gson.PL
 import co.ejjv.ccms_mobile.model.response.gson.Tag
 import co.ejjv.ccms_mobile.model.response.main._MainResp
 
-interface ListTagContract {
+interface ListTagCloseContract {
     interface View {
         fun showLoading()
         fun hideLoading()
@@ -15,14 +16,15 @@ interface ListTagContract {
         fun showToast(imsg: String?)
 
         fun goToRegisterPLActivity(tag : String)
-        fun setListTag(listTag : ArrayList<Tag>)
+        fun setListTag(listTag : ArrayList<PL>)
         fun refreshAdapter()
-        fun getTagAdapter(): ListTagAdapter
+        fun getTagAdapter(): ListTagCloseAdapter
         fun setPagination(page : Int, totalData : Int)
     }
 
     interface Presenter {
         fun getListTag()
+        fun saveListClosePL(listSelectList : List<PL>)
         fun onRefreshSource()
         fun onFilterDataSource(searchView: SearchView)
         fun onNextPage()
@@ -31,9 +33,11 @@ interface ListTagContract {
 
     interface Model {
         interface OnFinishedListener {
-            fun onSuccess(mainResp: _MainResp<ArrayList<Tag>>)
+            fun onSuccess(mainResp: _MainResp<ArrayList<PL>>, tag : String)
+            fun onSuccessSave(mainResp: _MainResp<Int>)
             fun onFailure(t: Throwable)
         }
         fun getListTagAll(onFinishedListener : OnFinishedListener, paramMain : ParamMain)
+        fun saveClosePL(onFinishedListener : OnFinishedListener, listClosePL : List<ParamClosePL>)
     }
 }

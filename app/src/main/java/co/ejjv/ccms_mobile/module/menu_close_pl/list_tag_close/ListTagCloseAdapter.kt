@@ -1,4 +1,4 @@
-package co.ejjv.ccms_mobile.module.menu_register_pl.list_tag
+package co.ejjv.ccms_mobile.module.menu_close_pl.list_tag_close
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -9,20 +9,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.ejjv.ccms_mobile.R
 import co.ejjv.ccms_mobile.model.response.gson.PL
-import co.ejjv.ccms_mobile.model.response.gson.Tag
-import kotlinx.android.synthetic.main.item_pl.view.*
-import kotlinx.android.synthetic.main.item_pl.view.cvPL
 import kotlinx.android.synthetic.main.item_tag.view.*
 
-class ListTagAdapter() : RecyclerView.Adapter<ListTagAdapter.myViewHolder>() {
+class ListTagCloseAdapter() : RecyclerView.Adapter<ListTagCloseAdapter.myViewHolder>() {
     private lateinit var mContext: Context
-    lateinit var mListTag: List<Tag>
-    lateinit var mListTag_selected: List<Tag>
-    private lateinit var mTagView : ListTagContract.View
+    lateinit var mPunchList: List<PL>
+    lateinit var mPunchList_selected: List<PL>
+    private lateinit var mTagView : ListTagCloseContract.View
 
-    constructor(context: Context, listTag: List<Tag>, listTagSelect: List<Tag>, TagView : ListTagContract.View) : this() {
-        this.mListTag = listTag
-        this.mListTag_selected = listTagSelect
+    constructor(context: Context, listTag: List<PL>, listTagSelect: List<PL>, TagView : ListTagCloseContract.View) : this() {
+        this.mPunchList = listTag
+        this.mPunchList_selected = listTagSelect
         this.mContext = context
         this.mTagView = TagView
     }
@@ -33,15 +30,15 @@ class ListTagAdapter() : RecyclerView.Adapter<ListTagAdapter.myViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
-        val tag = mListTag[position]
+        val tag = mPunchList[position]
 
-        holder.tvNoTag.text = tag.getItemKey()
-        holder.tvDescTag.text = tag.getItemDesc()
+        holder.tvNoTag.text = tag.getPunchNo()
+        holder.tvDescTag.text = tag.getDetails()
         /* holder.cvTag.setOnClickListener {
             mTagView.goToListTagDetActivity(tag.getID()!!)
         }*/
 
-        if (mListTag_selected.contains(mListTag[position])) {
+        if (mPunchList_selected.contains(mPunchList[position])) {
             holder.cvTag.setBackgroundColor(ContextCompat.getColor(mContext, R.color.list_item_selected_state))
             holder.layoutCheck.visibility = View.VISIBLE
         } else {
@@ -57,5 +54,5 @@ class ListTagAdapter() : RecyclerView.Adapter<ListTagAdapter.myViewHolder>() {
         internal var layoutCheck = itemView.layoutCheck
     }
 
-    override fun getItemCount() = mListTag.size
+    override fun getItemCount() = mPunchList.size
 }
