@@ -6,24 +6,27 @@ import co.ejjv.ccms_mobile.model.param.ParamMain
 import co.ejjv.ccms_mobile.model.response.gson.PL
 import co.ejjv.ccms_mobile.model.response.gson.Tag
 import co.ejjv.ccms_mobile.model.response.main._MainResp
+import co.ejjv.ccms_mobile.util._MainContract
 
 interface ListTagCloseContract {
-    interface View {
+    interface View : _MainContract.MainView {
         fun showLoading()
         fun hideLoading()
         fun hideRefresh()
         fun showAlertDialog(imsg: String, itipe: Int)
         fun showToast(imsg: String?)
 
-        fun goToRegisterPLActivity(tag : String)
+        //fun goToRegisterPLActivity(tag : String)
         fun setListTag(listTag : ArrayList<PL>)
         fun refreshAdapter()
         fun getTagAdapter(): ListTagCloseAdapter
         fun setPagination(page : Int, totalData : Int)
+        fun goToMenuClosePLActivity()
+        fun showAlertDialogWithOptions(imsg : String, tag : String)
     }
 
     interface Presenter {
-        fun getListTag()
+        fun getListTag(qrcode : String)
         fun saveListClosePL(listSelectList : List<PL>)
         fun onRefreshSource()
         fun onFilterDataSource(searchView: SearchView)

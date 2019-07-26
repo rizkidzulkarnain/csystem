@@ -20,35 +20,51 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
     var mIsSearch: Boolean = false
     var mQuerysearch: String = ""
     var mQueryTextChange: Boolean = false
+    var mQrCode: String = ""
 
     constructor(listTagView: ListTagCloseContract.View, listTagCloseDataInteractor: ListTagCloseContract.Model) {
         this.mListTagView = listTagView
         this.mlistTagCloseDataInteractor = listTagCloseDataInteractor
     }
 
-    override fun getListTag() {
+    override fun getListTag(qrcode: String) {
         mListTagView.showLoading()
-        var filter = Filter("PLStatus", "0", "eq")
-        var listFilter = ArrayList<Filter>()
-        listFilter.add(filter)
+        mQrCode = qrcode
 
-        var sort = Sort("ID", "DESC")
-        var listSort = ArrayList<Sort>()
-        listSort.add(sort)
+        if (mQrCode == "") {
+            var filter = Filter("PLStatus", "0", "eq")
+            var listFilter = ArrayList<Filter>()
+            listFilter.add(filter)
 
-        mParamMain = ParamMain(mPage, 10, listSort, listFilter, StaticHelper.PROJECT)
+            var sort = Sort("ID", "DESC")
+            var listSort = ArrayList<Sort>()
+            listSort.add(sort)
+
+            mParamMain = ParamMain(mPage, 10, listSort, listFilter, StaticHelper.PROJECT)
+        } else {
+            var filter = Filter("PLStatus", "'" + mQrCode + "'", "eq", "string")
+            var listFilter = ArrayList<Filter>()
+            listFilter.add(filter)
+
+            var sort = Sort("ID", "DESC")
+            var listSort = ArrayList<Sort>()
+            listSort.add(sort)
+
+            mParamMain = ParamMain(mPage, 10, listSort, listFilter, StaticHelper.PROJECT)
+        }
 
         mlistTagCloseDataInteractor.getListTagAll(this, mParamMain)
     }
 
-    override fun saveListClosePL(listSelectList : List<PL>) {
+    override fun saveListClosePL(listSelectList: List<PL>) {
+        mListTagView.showLoading()
         var listClosePL = arrayListOf<ParamClosePL>()
-        for(item in listSelectList){
+        for (item in listSelectList) {
             var paramClosePL = ParamClosePL()
             paramClosePL.actionBy = StaticHelper.USER!!.getUserName()
-            paramClosePL.id = item.getProjectID()
+            paramClosePL.id = item.getID().toString()
             paramClosePL.projectID = StaticHelper.PROJECT
-            paramClosePL.remarks = "testing"
+            paramClosePL.remarks = ""
             listClosePL.add(paramClosePL)
         }
         mlistTagCloseDataInteractor.saveClosePL(this, listClosePL)
@@ -58,9 +74,9 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
         mlistTagCloseDataInteractor.getListTagAll(this, mParamMain)
     }
 
-    override fun onSuccess(mainResp: _MainResp<ArrayList<PL>>, tag : String) {
-        when(tag){
-            "get_close_pl"->{
+    override fun onSuccess(mainResp: _MainResp<ArrayList<PL>>, tag: String) {
+        when (tag) {
+            "get_close_pl" -> {
                 mListTagView.setListTag(mainResp.data!!)
                 mListTagView.setPagination(mPage, mainResp.totalData!!)
                 mListTagView.hideLoading()
@@ -70,7 +86,8 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
     }
 
     override fun onSuccessSave(mainResp: _MainResp<Int>) {
-        mListTagView.showAlertDialog(mainResp.data.toString() + " Punchlist Berhasil di close !", 3)
+        mListTagView.hideLoading()
+        mListTagView.showAlertDialogWithOptions(mainResp.data.toString() + " Punchlist Berhasil di close !", "closepl")
     }
 
     override fun onFailure(t: Throwable) {
@@ -94,7 +111,11 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
                         mPage = 1
                         mIsSearch = false
                         mQueryTextChange = false
-                        getListTag()
+                        if (mQrCode == "") {
+                            getListTag("")
+                        } else {
+                            getListTag(mQrCode)
+                        }
                     }
                     mQueryTextChange = true
                 }
@@ -105,9 +126,18 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
 
     fun searchParam(query: String) {
         mListTagView.showLoading()
-        var filter = Filter("ItemDesc", query, "like")
+
         var listFilter = ArrayList<Filter>()
+
+        var filter2 = Filter("PLStatus", "0", "eq")
+        listFilter.add(filter2)
+
+        var filter = Filter("PunchNo", query, "like")
         listFilter.add(filter)
+
+        var sort = Sort("ID", "DESC")
+        var listSort = ArrayList<Sort>()
+        listSort.add(sort)
 
         var paramMain = ParamMain(1, 10, null, listFilter as List<Filter>, StaticHelper.PROJECT)
         mlistTagCloseDataInteractor.getListTagAll(this@ListTagCloseImpl, paramMain)
@@ -115,19 +145,27 @@ class ListTagCloseImpl : ListTagCloseContract.Presenter,
 
     override fun onNextPage() {
         mPage += 1
-        if(mIsSearch){
+        if (mIsSearch) {
             searchParam(mQuerysearch)
-        }else{
-            getListTag()
+        } else {
+            if (mQrCode == "") {
+                getListTag("")
+            } else {
+                getListTag(mQrCode)
+            }
         }
     }
 
     override fun onPrevPage() {
         mPage -= 1
-        if(mIsSearch){
+        if (mIsSearch) {
             searchParam(mQuerysearch)
-        }else{
-            getListTag()
+        } else {
+            if (mQrCode == "") {
+                getListTag("")
+            } else {
+                getListTag(mQrCode)
+            }
         }
     }
 }

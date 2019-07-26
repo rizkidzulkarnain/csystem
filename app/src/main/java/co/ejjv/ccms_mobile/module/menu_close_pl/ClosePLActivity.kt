@@ -8,7 +8,6 @@ import co.ejjv.ccms_mobile.util.LoadingDialog
 import com.ejjv.ccms_mobile.R
 import kotlinx.android.synthetic.main.activity_register_pl.*
 import android.content.Intent
-import co.ejjv.ccms_mobile.module.menu_register_pl.list_tag.ListTagActivity
 import co.ejjv.ccms_mobile.util.QRScanner
 import android.content.Context
 import android.widget.Toast
@@ -79,10 +78,15 @@ class ClosePLActivity : AppCompatActivity(), ClosePLContract.View {
         when (requestCode) {
             1 ->
                 if (resultCode == Activity.RESULT_OK) {
-                    val atag = data!!.getStringExtra("tag")
+                    val tag = data!!.getStringExtra("tag")
                     val code = data.getStringExtra("code")
-                    when (atag) {
+                    when (tag) {
                         "scan_tag" -> {
+                            /*intent.putExtra("code", code)
+                            intent.putExtra("tag", "scan_tag")*/
+                            val intent = Intent(this@ClosePLActivity, ListTagCloseActivity::class.java)
+                            intent.putExtra("code", code)
+                            startActivity(intent)
                         }
                     }
                 }

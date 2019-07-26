@@ -13,6 +13,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import co.ejjv.ccms_mobile.model.response.gson.PL
+import co.ejjv.ccms_mobile.module.menu.MenuActivity
+import co.ejjv.ccms_mobile.module.menu_close_pl.ClosePLActivity
 import co.ejjv.ccms_mobile.util.AlertDialogCustom
 import co.ejjv.ccms_mobile.util.LoadingDialog
 import co.ejjv.ccms_mobile.util.RecyclerItemClickListener
@@ -66,7 +68,12 @@ class ListTagCloseActivity : AppCompatActivity(), ListTagCloseContract.View {
 
     override fun onResume() {
         super.onResume()
-        mTagImpl.getListTag()
+        val param = intent.extras
+        var qrcode = ""
+        if (param != null) {
+            qrcode = param.getString("code")
+        }
+        mTagImpl.getListTag(qrcode)
     }
 
     private fun setComponent() {
@@ -203,18 +210,38 @@ class ListTagCloseActivity : AppCompatActivity(), ListTagCloseContract.View {
         mAlertDialog.showAlertDialog(imsg, itipe)
     }
 
+    override fun showAlertDialogWithOptions(imsg: String, tag: String) {
+        var alertDialog = AlertDialogCustom(this, this, tag)
+        alertDialog.showAlertDialog(imsg, 3)
+    }
+
+    override fun onPostAlertDialogAction(itag: String) {
+        if (itag == "closepl") {
+            goToMenuClosePLActivity()
+        } else {
+            showToast("No option with your tag inputted !")
+        }
+    }
+
+    override fun goToMenuClosePLActivity() {
+        val aintent = Intent(this, ClosePLActivity::class.java)
+        startActivity(aintent)
+        finish()
+    }
+
+
     override fun showToast(imsg: String?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun goToRegisterPLActivity(tag : String) {
+   /* override fun goToRegisterPLActivity(tag : String) {
         val intent = Intent()
         intent.putExtra("code", tag)
         intent.putExtra("tag", "scan_tag")
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
-
+*/
     override fun refreshAdapter() {
         mListTagCloseAdapter.notifyDataSetChanged()
     }
@@ -239,7 +266,7 @@ class ListTagCloseActivity : AppCompatActivity(), ListTagCloseContract.View {
             ivPrev.visibility = View.VISIBLE
         }
 
-        if(totalData == 0){
+        if(totalData == 0 || totalData == 1){
             ivNext.visibility = View.INVISIBLE
         }else{
             ivNext.visibility = View.VISIBLE
