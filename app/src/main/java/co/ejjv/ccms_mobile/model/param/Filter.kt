@@ -29,4 +29,6 @@ class Filter {
         this.operator = operator
         this.type = type
     }
+
+    //testing
 }
